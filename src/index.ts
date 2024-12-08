@@ -1,5 +1,6 @@
 import express from 'express';
 import { MongoDatabase } from './data/init';
+import { AppRoutes } from './controller/routes';
 const app = express();
 
 app.use(express.json());

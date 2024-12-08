@@ -8,7 +8,8 @@ interface UserJwtPayload extends JwtPayload {
 
 export const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
   // Obtiene el token de los headers (Authorization)
-  const token = req.header('Authorization');
+  // const token = req.header('Authorization');
+  const token = req.header('Authorization')?.split(' ')[1];
   
   // Si no existe el token, retorna un error 401 (Acceso denegado)
   if (!token) {
