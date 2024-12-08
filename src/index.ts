@@ -1,5 +1,6 @@
 import express from 'express';
 import { MongoDatabase } from './data/init';
+
 const app = express();
 
 app.use(express.json());

@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist && tsc",
-    "dev": "ts-node-dev src/index.ts"
+    "dev": "ts-node-dev --transpile-only src/index.ts"
+
 
   },
   "keywords": [],
