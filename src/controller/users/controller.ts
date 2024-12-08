@@ -59,7 +59,7 @@ export class UserController{
         await user.save();
         const token = jwt.sign(
           { id: user._id, role: user.role },
-          ' SECRET_KEY',
+          'SECRET_KEY',
           { expiresIn: '1h' }
         );
         res.json(token);

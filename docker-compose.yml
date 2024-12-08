@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-    incident-api:
-      image: enemyemy01/monkey-pox-api:latest
-      container_name: monkey-pox-api
+    back-hosting-api:
+      image: enemyemy01/img_back_reserv:latest
+      container_name: hosting-api
       environment:
         PORT: ${PORT}
         MONGO_URL: ${MONGO_URL_DOCKER}

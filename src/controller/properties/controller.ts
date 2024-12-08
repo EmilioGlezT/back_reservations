@@ -35,14 +35,14 @@ export class PropertyController{
     }
     public createProperty = async (req: Request, res: Response) => {
       try {
-        const { title, description, address, pricePerNight, latitude, longitude, availability } = req.body;
+        const { title, description, address, pricePerNight, latitude, longitude, availability, userId } = req.body;
     
         // Validar rol de anfitrión
         if (req.body?.role !== 'host') {
-          return res.status(403).json({ message: 'Solo los anfitriones pueden crear propiedades' });
+           res.status(403).json({ message: 'Solo los anfitriones pueden crear propiedades' });
         }
     
-        const newProperty = new PropertyModel({
+        const newProperty = await PropertyModel.create({
           title,
           description,
           address,
@@ -50,13 +50,46 @@ export class PropertyController{
           latitude,
           longitude,
           availability,
-          host: req.user?.id, // ID del anfitrión autenticado
+          host: userId, // ID del anfitrión autenticado
         });
     
         const savedProperty = await newProperty.save();
         res.status(201).json(savedProperty);
-      } catch (err) {
+      } catch (err:any) {
         res.status(400).json({ message: err.message });
+      }
+    }
+    public updateProperty = async (req: Request, res: Response): Promise<any> => {
+      try {
+        const property = await PropertyModel.findById(req.params.id);
+    
+        if (!property) return  res.status(404).json({ message: 'Propiedad no encontrada' });
+    
+        if (property.host.toString() !== req.body.userId) {
+          res.status(403).json({ message: 'No tienes permiso para actualizar esta propiedad' });
+        }
+    
+        const updatedProperty = await PropertyModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.json(updatedProperty);
+      } catch (err:any) {
+        res.status(500).json({ message: err.message });
+      }
+    }
+
+    public deleteProperty = async (req: Request, res: Response): Promise<any> => {
+      try {
+        const property = await PropertyModel.findById(req.params.id);
+    
+        if (!property) return res.status(404).json({ message: 'Propiedad no encontrada' });
+    
+        if (property.host.toString() !== req.body.userId) {
+          return res.status(403).json({ message: 'No tienes permiso para eliminar esta propiedad' });
+        }
+    
+        await PropertyModel.findByIdAndDelete(req.params.id);
+        res.json({ message: 'Propiedad eliminada' });
+      } catch (err:any) {
+        res.status(500).json({ message: err.message });
       }
     }
 }

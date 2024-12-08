@@ -1,5 +1,4 @@
 import {Router} from 'express';
-import {Request, Response} from 'express';
 import { PropertyController } from './controller';
 
 export class PropertiesRoutes{
@@ -9,6 +8,9 @@ export class PropertiesRoutes{
         const propertyController = new PropertyController();
         router.get("/", propertyController.getProperties);
         router.get("/:id", propertyController.getPropertyById);
+        router.post("/", propertyController.createProperty);
+        router.put("/:id", propertyController.updateProperty);
+        router.delete("/:id", propertyController.deleteProperty);
         
         return router;
     }

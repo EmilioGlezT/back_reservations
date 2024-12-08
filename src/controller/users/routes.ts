@@ -11,7 +11,7 @@ export class UserRoutes {
         router.post('/login', authenticateToken,  userController.login);
         router.get('/users' ,authenticateToken,  userController.getAllUsers);
         router.get('/users/:id',authenticateToken, userController.getUserById);
-        router.post('/users',authenticateToken , userController.createUser);
+        router.post('/users' , userController.createUser);
         return router;
     }
    
