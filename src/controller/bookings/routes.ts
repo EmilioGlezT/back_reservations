@@ -11,7 +11,8 @@ export class BookingsRoutes{
         router.get("/:id", bookingsController.getBookingById);
         router.put("/:id", bookingsController.updateBooking);
         router.delete("/:id", bookingsController.deleteBooking);
-        
+        router.get("/property/:propertyId", bookingsController.getBookingsByProperty);
+        router.get("/user/:userId", bookingsController.getBookingsByUser);
         
         return router;
     }
