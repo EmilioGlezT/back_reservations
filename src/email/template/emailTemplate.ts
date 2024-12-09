@@ -55,7 +55,7 @@ export function generateBookingEmailTemplate(
     <body>
         <div class="container">
             <div class="header">
-                <h1>Detalles del caso</h1>
+                <h1>Detalles de la reservacion</h1>
             </div>
             <div class="content">
                 <p><strong>Nombre de la propiedad d:</strong> ${data.propertyName}</p>
