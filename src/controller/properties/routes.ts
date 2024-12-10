@@ -11,7 +11,7 @@ export class PropertiesRoutes{
         router.post("/", propertyController.createProperty);
         router.put("/:id", propertyController.updateProperty);
         router.delete("/:id", propertyController.deleteProperty);
-        router.get("/host/:hostId", propertyController.getPropertiesByHost);
+        router.get("/host/:userId", propertyController.getPropertiesByHost);
         return router;
     }
 }

@@ -110,6 +110,7 @@ export class PropertyController{
         const userId = req.params.userId;
         const objectId = new mongoose.Types.ObjectId(userId);
         const properties = await PropertyModel.find({ host: objectId });
+
         res.json(properties);
       } catch (err:any) {
         res.status(500).json({ message: err.message });
