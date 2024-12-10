@@ -141,6 +141,32 @@ export class BookingsController{
           res.status(400).json({ message: err.message });
         }
       };
+
+    public getBookingsByProperty = async (req: Request, res: Response) => {
+      try {
+        const { propertyId } = req.params;
+    
+        const bookings = await BookingModel.find({ property: propertyId })
+          .populate('user', 'name email');
+    
+        res.status(200).json(bookings);
+      } catch (err:any) {
+        res.status(400).json({ message: err.message });
+      }
+    }
+
+    public getBookingsByUser = async (req: Request, res: Response) => {
+      try {
+        const { userId } = req.params;
+    
+        const bookings = await BookingModel.find({ user: userId })
+          .populate('property', 'title address');
+    
+        res.status(200).json(bookings);
+      } catch (err:any) {
+        res.status(400).json({ message: err.message });
+      }
+    }
       
       
       

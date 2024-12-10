@@ -19,7 +19,7 @@ const propertySchema = new mongoose.Schema({
     },
     host: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User', required: true 
+        ref: 'user', required: true 
     },
     availability: [
         {

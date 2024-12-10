@@ -1,5 +1,6 @@
 import { PropertyModel } from "../../data/models/property.model";
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 
 export class PropertyController{
     public  getProperties = async (req: Request, res: Response) => {
@@ -23,10 +24,13 @@ export class PropertyController{
           }
     }
 
-    public getPropertyById = async (req: Request, res: Response): Promise<any> => {
+    public getPropertyById = async (req: Request, res: Response) => {
         try {
             const property = await PropertyModel.findById(req.params.id).populate('host');
-            if (!property) return res.status(404).json({ message: 'Propiedad no encontrada' });
+            if (!property) {
+              res.status(404).json({ message: 'Propiedad no encontrada' });
+              return;
+            } 
         
             res.json(property);
           } catch (err:any) {
@@ -59,14 +63,18 @@ export class PropertyController{
         res.status(400).json({ message: err.message });
       }
     }
-    public updateProperty = async (req: Request, res: Response): Promise<any> => {
+    public updateProperty = async (req: Request, res: Response) => {
       try {
         const property = await PropertyModel.findById(req.params.id);
     
-        if (!property) return  res.status(404).json({ message: 'Propiedad no encontrada' });
+        if (!property) {
+          res.status(404).json({ message: 'Propiedad no encontrada' });
+          return;
+        }  
     
         if (property.host.toString() !== req.body.userId) {
           res.status(403).json({ message: 'No tienes permiso para actualizar esta propiedad' });
+          return;
         }
     
         const updatedProperty = await PropertyModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -76,18 +84,34 @@ export class PropertyController{
       }
     }
 
-    public deleteProperty = async (req: Request, res: Response): Promise<any> => {
+    public deleteProperty = async (req: Request, res: Response) => {
       try {
         const property = await PropertyModel.findById(req.params.id);
     
-        if (!property) return res.status(404).json({ message: 'Propiedad no encontrada' });
+        if (!property) {
+          res.status(404).json({ message: 'Propiedad no encontrada' });
+          return;
+        } 
     
         if (property.host.toString() !== req.body.userId) {
-          return res.status(403).json({ message: 'No tienes permiso para eliminar esta propiedad' });
+           res.status(403).json({ message: 'No tienes permiso para eliminar esta propiedad' });
+           return;
         }
     
         await PropertyModel.findByIdAndDelete(req.params.id);
         res.json({ message: 'Propiedad eliminada' });
+      } catch (err:any) {
+        res.status(500).json({ message: err.message });
+      }
+    }
+
+    public getPropertiesByHost = async (req: Request, res: Response) => {
+      try {
+        const userId = req.params.userId;
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const properties = await PropertyModel.find({ host: objectId });
+
+        res.json(properties);
       } catch (err:any) {
         res.status(500).json({ message: err.message });
       }
