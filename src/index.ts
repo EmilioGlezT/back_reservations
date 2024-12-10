@@ -1,11 +1,12 @@
 import express from 'express';
 import { MongoDatabase } from './data/init';
 import { AppRoutes } from './controller/routes';
+import cors from 'cors';
 const app = express();
 
 app.use(express.json());
 
-
+app.use(cors());
 app.use(AppRoutes.routes);
 console.log(process.env.PORT);
 

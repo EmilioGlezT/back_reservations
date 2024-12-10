@@ -1,5 +1,6 @@
 import { PropertyModel } from "../../data/models/property.model";
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 
 export class PropertyController{
     public  getProperties = async (req: Request, res: Response) => {
@@ -106,7 +107,9 @@ export class PropertyController{
 
     public getPropertiesByHost = async (req: Request, res: Response) => {
       try {
-        const properties = await PropertyModel.find({ host: req.params.userId });
+        const userId = req.params.userId;
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const properties = await PropertyModel.find({ host: objectId });
         res.json(properties);
       } catch (err:any) {
         res.status(500).json({ message: err.message });
